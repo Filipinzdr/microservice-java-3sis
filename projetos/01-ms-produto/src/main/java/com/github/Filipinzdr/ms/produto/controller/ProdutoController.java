@@ -1,21 +1,32 @@
 package com.github.Filipinzdr.ms.produto.controller;
 
 import com.github.Filipinzdr.ms.produto.domain.Produto;
+import com.github.Filipinzdr.ms.produto.dto.ProdutoRequestDTO;
+import com.github.Filipinzdr.ms.produto.dto.ProdutoResponseDTO;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @RequestMapping("/produtos")
 public class ProdutoController {
 
     @GetMapping
-    public ResponseEntity<Produto> getProduto() {
+    public ResponseEntity<List<ProdutoResponseDTO>> getProduto() {
 
-        Produto produto = new Produto(1L, "Smart TV", "Smart TV LG LED 50 polegadas", 2285.0);
+        List<ProdutoResponseDTO> dto = ProdutoResponseDTO.createMock();
+        return ResponseEntity.ok(dto);
 
-        return ResponseEntity.ok(produto);
+    }
+
+    @PostMapping
+    public ResponseEntity<ProdutoResponseDTO> createProduto(@RequestBody ProdutoRequestDTO inputDTO){
+        ProdutoResponseDTO dto =  new ProdutoResponseDTO(1L, inputDTO.getNome(), inputDTO.getDescricao(), inputDTO.getValor());
+
+
+        return ResponseEntity.created(null).body(dto);
 
     }
 
